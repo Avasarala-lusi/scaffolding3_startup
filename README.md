@@ -18,6 +18,7 @@ First, test your environment:
 ```bash
 python test_setup.py
 ```
+<img width="1858" height="785" alt="image" src="https://github.com/user-attachments/assets/c6055607-5df9-4267-a230-68f49f048dd4" />
 
 If all tests pass, you're ready to go! If not, install missing packages:
 ```bash
