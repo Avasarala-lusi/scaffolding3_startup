@@ -341,8 +341,14 @@
                     <span class="stat-value">${stats.avg_sentence_length.toFixed(1)}</span>
                     <div class="stat-label">Avg Sentence Length</div>
                 </div>
+                <div class="stat-card" style="grid-column: 1 / -1;">
+                    <div class="stat-label" style="margin-bottom: 0.5rem; font-weight: 600;">Top 10 Most Common Words</div>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
+                        ${stats.most_common_words.map(w => `<span style="background: #eef; padding: 4px 10px; border-radius: 4px; font-size: 0.9rem;">${w[0]} <strong>(${w[1]})</strong></span>`).join('')}
+                    </div>
+                </div>
             `;
-            
+
             // Display summary
             document.getElementById('summary').textContent = data.summary;
             
@@ -371,16 +377,19 @@
             showLoading();
             
             try {
-                // TODO: Make API call to /api/clean endpoint
-                // Hint: Use fetch() with POST method
-                // Send JSON: {"url": url}
-                // Handle the response
-                
-                // For now, show an error since the API isn't implemented yet
-                setTimeout(() => {
-                    showError('API not implemented yet. Complete Part 3 to make this work!');
-                }, 1000);
-                
+                const response = await fetch('/api/clean', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    showError(data.error || 'Unknown error occurred');
+                }
             } catch (error) {
                 showError('Network error: ' + error.message);
             }

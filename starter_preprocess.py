@@ -63,9 +63,9 @@ class TextPreprocessor:
         text = text.lower()
         
         # Standardize quotes and dashes
-        text = re.sub(r'[""]', '"', text)
-        text = re.sub(r'['']', "'", text)
-        text = re.sub(r'—|–', '-', text)
+        text = re.sub(r'[\u201c\u201d]', '"', text)
+        text = re.sub(r'[\u2018\u2019]', "'", text)
+        text = re.sub(r'\u2014|\u2013', '-', text)
         
         if preserve_sentences:
             # Keep sentence endings but remove other punctuation
@@ -118,49 +118,70 @@ class TextPreprocessor:
     
     def fetch_from_url(self, url: str) -> str:
         """
-        TODO: Fetch text content from a URL (especially Project Gutenberg)
-        
+        Fetch text content from a URL (especially Project Gutenberg)
+
         Args:
             url: URL to a .txt file
-            
+
         Returns:
             Raw text content
-            
+
         Raises:
             Exception if URL is invalid or cannot be reached
         """
-        # Hint: Use requests.get() and validate that it's a .txt URL
-        # Don't forget error handling!
-        raise NotImplementedError("Implement this for Part 2 of the assignment")
+        if not url.endswith('.txt'):
+            raise ValueError("URL must ends with .txt")
+
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        response.encoding = 'utf-8'
+        return response.text
     
     def get_text_statistics(self, text: str) -> Dict:
         """
-        TODO: Calculate basic statistics about the text
-        
+        Calculate basic statistics about the text
+
         Returns dictionary with:
             - total_characters
-            - total_words  
+            - total_words
             - total_sentences
             - avg_word_length
             - avg_sentence_length
             - most_common_words (top 10)
         """
-        # Hint: Use the existing tokenize methods and Counter
-        raise NotImplementedError("Implement this for Part 2 of the assignment")
+        words = self.tokenize_words(text)
+        sentences = self.tokenize_sentences(text)
+
+        total_characters = len(text)
+        total_words = len(words)
+        total_sentences = len(sentences)
+        avg_word_length = sum(len(w) for w in words) / total_words if total_words else 0
+        avg_sentence_length = total_words / total_sentences if total_sentences else 0
+        most_common_words = Counter(words).most_common(10)
+
+        return {
+            "total_characters": total_characters,
+            "total_words": total_words,
+            "total_sentences": total_sentences,
+            "avg_word_length": round(avg_word_length, 2),
+            "avg_sentence_length": round(avg_sentence_length, 2),
+            "most_common_words": most_common_words
+        }
     
     def create_summary(self, text: str, num_sentences: int = 3) -> str:
         """
-        TODO: Create a simple extractive summary by returning the first N sentences
-        
+        Create a simple extractive summary by returning the first N sentences
+
         Args:
             text: Cleaned text
             num_sentences: Number of sentences to include
-            
+
         Returns:
             Summary string
         """
-        # Hint: Use tokenize_sentences() and join the first N sentences
-        raise NotImplementedError("Implement this for Part 2 of the assignment")
+        sentences = self.tokenize_sentences(text)
+        selected = sentences[:num_sentences]
+        return '. '.join(selected) + '.' if selected else ''
 
 
 class FrequencyAnalyzer:
