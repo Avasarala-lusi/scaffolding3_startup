@@ -38,10 +38,10 @@ Paste a Project Gutenberg `.txt` URL into the input box and hit submit. The app 
 - A short summary (first 3 sentences)
 - A preview of the cleaned 500 characters
 
-There are some example URLs on the page you can click to try it out:
+## Screenshot of working appliation
+<img width="1816" height="847" alt="image" src="https://github.com/user-attachments/assets/d03721cb-f343-467b-b147-ec346a5730f1" />
 
-- Pride and Prejudice: `https://www.gutenberg.org/files/1342/1342-0.txt`
-- Frankenstein: `https://www.gutenberg.org/files/84/84-0.txt`
-- Alice in Wonderland: `https://www.gutenberg.org/files/11/11-0.txt`
-- Moby Dick: `https://www.gutenberg.org/files/2701/2701-0.txt`
+<img width="1790" height="810" alt="image" src="https://github.com/user-attachments/assets/dbceba80-ddc5-43be-a27d-8ec3f6ef9942" />
+
+
 
